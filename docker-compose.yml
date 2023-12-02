@@ -1,0 +1,61 @@
+version: '3.5'
+
+services:
+  nginx-library:
+    container_name: nginx-library
+    image: nginx:1.22
+    restart: "no"
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/
+      - ./.docker/config/nginx/:/etc/nginx/conf.d/
+      - ./.docker/logs/nginx:/var/log/nginx/
+    networks:
+      - web-network-library
+
+  php-library:
+    build:
+      context: ./.docker
+    container_name: php-library
+    restart: "no"
+    working_dir: /var/www
+    volumes:
+      - .:/var/www/
+    networks:
+      - web-network-library
+
+  mysql-library:
+    container_name: mysql-library
+    image: mysql:latest
+    restart: "no"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./logs/mysql/:/var/logs/mysql
+      - db-library:/var/lib/mysql
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      MYSQL_ROOT_PASSWORD: local
+      MYSQL_DATABASE: library
+      MYSQL_USER: library
+      MYSQL_PASSWORD: library
+    networks:
+      - web-network-library
+
+  redis-library:
+    container_name: redis-library
+    image: redis:7.0.5
+    ports:
+      - "6380:6379"
+    networks:
+      - web-network-library
+
+volumes:
+    db-library:
+        name: db-library
+
+networks:
+  web-network-library:
+    driver: bridge
