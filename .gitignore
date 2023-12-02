@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /.docker/config/nginx/
+.idea
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
