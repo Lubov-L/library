@@ -10,9 +10,9 @@
   ``git clone git@github.com:Lubov-L/library.git``
 - Перейти в папку проекта
 
-- Выполнить команду ``composer require symfony/runtime``
+- Выполнить команду ``make install``
 - Выполнить команду ``make up migrate fixture``
-- При необходимости удаления авторов у которых нет книг выполните команду ``make author``
+- При необходимости удаления авторов у которых нет книг выполните команду ``make delete-authors``
 
 #### Настройка проекта завершена
 
