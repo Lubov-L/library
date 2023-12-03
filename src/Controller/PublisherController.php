@@ -88,9 +88,15 @@ class PublisherController extends AbstractController
     #[Route('/{id}', name: 'app_publisher_delete', methods: ['DELETE'])]
     public function delete(Request $request, Publisher $publisher, EntityManagerInterface $entityManager): JsonResponse
     {
+        $booksCount = $entityManager->getRepository(Book::class)->count(['publisher' => $publisher]);
+
+        if ($booksCount > 0) {
+            return $this->json(["error" => "Cannot delete publisher with books"]);
+        }
+
         $entityManager->remove($publisher);
         $entityManager->flush();
 
-        return $this->json(["success" => "true"]);
+        return $this->json(["success" => true]);
     }
 }

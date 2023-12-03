@@ -16,3 +16,10 @@ redis-logs:
 	docker compose logs redis-library
 vendor:
 	docker compose exec php-library bash -c "composer install"
+migrate:
+	@docker compose exec php-library bash -c "php bin/console make:migration" && \
+	docker compose exec php-library bash -c "php bin/console doctrine:migrations:migrate"
+fixture:
+	docker compose exec php-library bash -c "php bin/console doctrine:fixtures:load"
+authors:
+	docker compose exec php-library bash -c "php bin/console RemoveAuthorsWithoutBooks"
