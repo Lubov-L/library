@@ -47,16 +47,33 @@ class BookController extends AbstractController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['name']) || !isset($data['year']) || !isset($data['publisher']) || !isset($data['author'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
+
+        $publisherId = $data['publisher'];
+        $authorId = $data['author'];
+
+        $publisher = $publisher->find($publisherId);
+        if (!$publisher) {
+            return $this->json(["success" => false, "error" => "Publisher not found"], 404);
+        }
+
+        $author = $author->find($authorId);
+        if (!$author) {
+            return $this->json(["success" => false, "error" => "Author not found"], 404);
+        }
+
         $book = new Book();
         $book->setName($data['name']);
         $book->setYear($data['year']);
-        $book->setPublisher($publisher->find($data['publisher']));
-        $book->addAuthor($author->find($data['author']));
+        $book->setPublisher($publisher);
+        $book->addAuthor($author);
 
         $entityManager->persist($book);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => true]);
     }
 
     #[Route('/{id}', name: 'app_book_show', methods: ['GET'])]
@@ -81,18 +98,35 @@ class BookController extends AbstractController
         Book $book,
         EntityManagerInterface $entityManager,
         AuthorRepository $author,
-        PublisherRepository $publisher): JsonResponse
-    {
+        PublisherRepository $publisher
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['name']) || !isset($data['year']) || !isset($data['publisher']) || !isset($data['author'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
+
+        $publisherId = $data['publisher'];
+        $authorId = $data['author'];
+
+        $publisher = $publisher->find($publisherId);
+        if (!$publisher) {
+            return $this->json(["success" => false, "error" => "Publisher not found"], 404);
+        }
+
+        $author = $author->find($authorId);
+        if (!$author) {
+            return $this->json(["success" => false, "error" => "Author not found"], 404);
+        }
 
         $book->setName($data['name']);
         $book->setYear($data['year']);
-        $book->setPublisher($publisher->find($data['publisher']));
-        $book->addAuthor($author->find($data['author']));
+        $book->setPublisher($publisher);
+        $book->addAuthor($author);
 
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 
     #[Route('/{id}', name: 'app_book_delete', methods: ['DELETE'])]
@@ -101,6 +135,6 @@ class BookController extends AbstractController
         $entityManager->remove($book);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 }

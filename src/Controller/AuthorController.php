@@ -41,6 +41,10 @@ class AuthorController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['name']) || !isset($data['surname'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
+
         $author = new Author();
         $author->setName($data['name']);
         $author->setSurname($data['surname']);
@@ -48,7 +52,7 @@ class AuthorController extends AbstractController
         $entityManager->persist($author);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 
     #[Route('/{id}', name: 'app_author_show', methods: ['GET'])]
@@ -61,7 +65,7 @@ class AuthorController extends AbstractController
             'books' => $author->getBooks(),
         ];
 
-        return new JsonResponse($data);
+        return $this->json($data);
     }
 
     #[Route('/{id}/edit', name: 'app_author_edit', methods: ['PUT'])]
@@ -69,12 +73,16 @@ class AuthorController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['name']) || !isset($data['surname'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
+
         $author->setName($data['name']);
         $author->setSurname($data['surname']);
 
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 
     #[Route('/{id}', name: 'app_author_delete', methods: ['DELETE'])]
@@ -83,6 +91,6 @@ class AuthorController extends AbstractController
         $entityManager->remove($author);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 }

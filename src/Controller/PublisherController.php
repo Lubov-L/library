@@ -31,13 +31,17 @@ class PublisherController extends AbstractController
             ];
         }
 
-        return new JsonResponse($data);
+        return $this->json($data);
     }
 
     #[Route('/new', name: 'app_publisher_new', methods: ['POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
+        if (!isset($data['name']) || !isset($data['address'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
 
         $publisher = new Publisher();
         $publisher->setName($data['name']);
@@ -46,7 +50,7 @@ class PublisherController extends AbstractController
         $entityManager->persist($publisher);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 
     #[Route('/{id}', name: 'app_publisher_show', methods: ['GET'])]
@@ -61,7 +65,7 @@ class PublisherController extends AbstractController
             })->toArray(),
         ];
 
-        return new JsonResponse($data);
+        return $this->json($data);
     }
 
     #[Route('/{id}/edit', name: 'app_publisher_edit', methods: ['PUT'])]
@@ -69,12 +73,16 @@ class PublisherController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
+        if (!isset($data['name']) || !isset($data['address'])) {
+            return $this->json(["success" => false, "error" => "Bad request"], 400);
+        }
+
         $publisher->setName($data['name']);
         $publisher->setAddress($data['address']);
 
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 
     #[Route('/{id}', name: 'app_publisher_delete', methods: ['DELETE'])]
@@ -83,6 +91,6 @@ class PublisherController extends AbstractController
         $entityManager->remove($publisher);
         $entityManager->flush();
 
-        return new JsonResponse(["success" => "true"]);
+        return $this->json(["success" => "true"]);
     }
 }
