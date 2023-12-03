@@ -13,7 +13,7 @@ nginx-logs:
 vendor:
 	docker compose exec php-library bash -c "composer install"
 install:
-	docker compose exec php-library bash -c "php composer require symfony/runtime"
+	docker compose exec php-library bash -c "composer require symfony/runtime"
 migrate:
 	@docker compose exec php-library bash -c "php bin/console make:migration" && \
 	docker compose exec php-library bash -c "php bin/console doctrine:migrations:migrate"
