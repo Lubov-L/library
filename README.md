@@ -9,7 +9,6 @@
 - Выполнить клонирование проекта командой  
   ``git clone git@github.com:Lubov-L/library.git``
 - Перейти в папку проекта
-- Выполнить команду ``make install``
 - Требуется в .env внести данные для коннекта к базе данных
 ```
 DATABASE_URL="mysql://library:library@mysql-library:3306/library?serverVersion=8.0.32&charset=utf8mb4"
