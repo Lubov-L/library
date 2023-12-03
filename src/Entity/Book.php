@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
+#[ORM\Table('books')]
 class Book
 {
     #[ORM\Id]
@@ -26,11 +27,11 @@ class Book
     private ?Publisher $publisher = null;
 
     #[ORM\ManyToMany(targetEntity: Author::class, inversedBy: 'books')]
-    private Collection $author;
+    private Collection $authors;
 
     public function __construct()
     {
-        $this->author = new ArrayCollection();
+        $this->authors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,13 +80,13 @@ class Book
      */
     public function getAuthor(): Collection
     {
-        return $this->author;
+        return $this->authors;
     }
 
     public function addAuthor(Author $author): static
     {
-        if (!$this->author->contains($author)) {
-            $this->author->add($author);
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
         }
 
         return $this;
@@ -93,7 +94,7 @@ class Book
 
     public function removeAuthor(Author $author): static
     {
-        $this->author->removeElement($author);
+        $this->authors->removeElement($author);
 
         return $this;
     }

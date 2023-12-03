@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
+#[ORM\Table('authors')]
 class Author
 {
     #[ORM\Id]
@@ -21,7 +22,8 @@ class Author
     #[ORM\Column(length: 255)]
     private ?string $surname = null;
 
-    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'author')]
+    #[ORM\ManyToMany(targetEntity: Book::class, mappedBy: 'authors')]
+    #[ORM\JoinColumn('publisher_id')]
     private Collection $books;
 
     public function __construct()

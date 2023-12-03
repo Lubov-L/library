@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PublisherRepository::class)]
+#[ORM\Table('publishers')]
 class Publisher
 {
     #[ORM\Id]
@@ -79,7 +80,6 @@ class Publisher
     public function removeBook(Book $book): static
     {
         if ($this->books->removeElement($book)) {
-            // set the owning side to null (unless already changed)
             if ($book->getPublisher() === $this) {
                 $book->setPublisher(null);
             }

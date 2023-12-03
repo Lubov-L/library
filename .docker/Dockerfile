@@ -35,7 +35,7 @@ RUN pecl install redis \
     && docker-php-ext-enable redis
 
 # Расширения для работы с базой данных + gd конфигурация для работы captha
-RUN docker-php-ext-install pdo pdo_postgresql postgresql
+RUN docker-php-ext-install pdo pdo_mysql mysql
 RUN docker-php-ext-install gd \
       && docker-php-ext-configure gd --with-freetype --with-jpeg \
 	  && docker-php-ext-install -j$(nproc) gd
