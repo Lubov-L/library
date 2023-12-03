@@ -9,7 +9,8 @@
 - Выполнить клонирование проекта командой  
   ``git clone git@github.com:Lubov-L/library.git``
 - Перейти в папку проекта
-- Выполнить команду ``make up install migrate fixture``
+- Выполнить команду ``make up vendor install migrate fixture``
+- На все вопросы при установке требуется отвечать ``yes``
 - При необходимости удаления авторов у которых нет книг выполните команду ``make delete-authors``
 
 #### Настройка проекта завершена
