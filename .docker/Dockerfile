@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install opcache
 
 # Расширения для работы с базой данных + gd конфигурация для работы captha
-RUN docker-php-ext-install pdo pdo_mysql mysql
+RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # Установка composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
