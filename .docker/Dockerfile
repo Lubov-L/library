@@ -24,21 +24,10 @@ RUN apt-get update && apt-get install -y \
     git \
     curl
 
-# Подключение xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
 RUN docker-php-ext-install opcache
-
-# Подключение redis
-RUN pecl install redis \
-    && docker-php-ext-enable redis
 
 # Расширения для работы с базой данных + gd конфигурация для работы captha
 RUN docker-php-ext-install pdo pdo_mysql mysql
-RUN docker-php-ext-install gd \
-      && docker-php-ext-configure gd --with-freetype --with-jpeg \
-	  && docker-php-ext-install -j$(nproc) gd
 
 # Установка composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
